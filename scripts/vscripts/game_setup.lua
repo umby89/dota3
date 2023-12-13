@@ -27,7 +27,8 @@ function GameSetup:init()
 		DOTA_POST_GAME_COLUMN_ASSISTS,
         DOTA_POST_GAME_COLUMN_DAMAGE,
         DOTA_POST_GAME_COLUMN_NET_WORTH
-	} )      
+	} )
+          
 
 
 end

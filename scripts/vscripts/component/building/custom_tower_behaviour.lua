@@ -16,45 +16,45 @@ end
 function SetAllTowerAbilityInactive()
     print('SetAllTowerAbilityInactive')
     Say(nil, "SET ABILITY TO DEACTIVE", false)
-        -- TOP GOOD GUYS
-        radiantTopTowers = Entities:FindAllByName("npc_dota_custom_tower_top_goodguys")
-        for i = 1, #radiantTopTowers do      
-            for j = 0, 3 do
-                local hAbility = radiantTopTowers[i]:GetAbilityByIndex(j)
-                if hAbility ~= nil then
-                                        
-                    Say(nil, tostring(hAbility), false) 						
-                    hAbility:SetLevel(0)						
-                end	
-            end
-        end           
-        
-        -- MID GOOD GUYS
-        radiantMidTowers = Entities:FindAllByName("npc_dota_custom_tower_mid_goodguys")
-        for i = 1, #radiantMidTowers do
-            for j = 0, 3 do
-                local hAbility = radiantMidTowers[i]:GetAbilityByIndex(j)
-                if hAbility ~= nil then
-                                        
-                    Say(nil, tostring(hAbility), false) 						
-                    hAbility:SetLevel(0)						
-                end	
-            end                     
-        
+    -- TOP GOOD GUYS
+    radiantTopTowers = Entities:FindAllByName("npc_dota_custom_tower_top_goodguys")
+    for i = 1, #radiantTopTowers do      
+        for j = 0, 3 do
+            local hAbility = radiantTopTowers[i]:GetAbilityByIndex(j)
+            if hAbility ~= nil then
+                                    
+                Say(nil, tostring(hAbility), false) 						
+                hAbility:SetLevel(0)						
+            end	
         end
+    end           
+    
+    -- MID GOOD GUYS
+    radiantMidTowers = Entities:FindAllByName("npc_dota_custom_tower_mid_goodguys")
+    for i = 1, #radiantMidTowers do
+        for j = 0, 3 do
+            local hAbility = radiantMidTowers[i]:GetAbilityByIndex(j)
+            if hAbility ~= nil then
+                                    
+                Say(nil, tostring(hAbility), false) 						
+                hAbility:SetLevel(0)						
+            end	
+        end                     
+    
+    end
 
-        --BOT GOOD GUYS
-        radiantBotTowers = Entities:FindAllByName("npc_dota_custom_tower_bot_goodguys")
-        for i = 1, #radiantBotTowers do
-            for j = 0, 3 do
-                local hAbility = radiantBotTowers[i]:GetAbilityByIndex(j)
-                if hAbility ~= nil then
-                                        
-                    Say(nil, tostring(hAbility), false) 						
-                    hAbility:SetLevel(0)						
-                end	
-            end
-        end               
+    --BOT GOOD GUYS
+    radiantBotTowers = Entities:FindAllByName("npc_dota_custom_tower_bottom_goodguys")
+    for i = 1, #radiantBotTowers do
+        for j = 0, 3 do
+            local hAbility = radiantBotTowers[i]:GetAbilityByIndex(j)
+            if hAbility ~= nil then
+                                    
+                Say(nil, tostring(hAbility), false) 						
+                hAbility:SetLevel(0)						
+            end	
+        end
+    end               
 end
 
 -- 3 is for radiant? 2 for dire?
@@ -131,7 +131,7 @@ function TowerFollen (eventInfo)
         end
  
          --BOT GOOD GUYS
-         radiantBotTowers = Entities:FindAllByName("npc_dota_custom_tower_bot_goodguys")
+        radiantBotTowers = Entities:FindAllByName("npc_dota_custom_tower_bottom_goodguys")
         if radiantBotTowers ~= nil then
             for i = 1, #radiantBotTowers do
 
@@ -140,19 +140,19 @@ function TowerFollen (eventInfo)
                 TowerUpgrade(targetTowerbot)                
 
                 for j = 0, 3 do
-                    local hAbility = radiantBotTowers[i]:GetAbilityByIndex(j)
+                    local hAbility = targetTowerbot:GetAbilityByIndex(j)
                     if hAbility ~= nil then
                                              
                         Say(nil, tostring(hAbility), false) 
                         local value = math.min(heal, radiantBotTowers[i]:GetHealthDeficit())
-                        radiantBotTowers[i]:Heal(value, self);
-                        radiantBotTowers[i]:EmitSound("Hero_Omniknight.Purification")
+                        targetTowerbot:Heal(value, self);
+                        targetTowerbot:EmitSound("Hero_Omniknight.Purification")
                         
                         -- Particle 
-                        local particle = ParticleManager:CreateParticle("particles/generic_hero_status/hero_levelup.vpcf", PATTACH_ABSORIGIN_FOLLOW, radiantBotTowers[i])
+                        local particle = ParticleManager:CreateParticle("particles/generic_hero_status/hero_levelup.vpcf", PATTACH_ABSORIGIN_FOLLOW,targetTowerbot)
                         ParticleManager:ReleaseParticleIndex( particle )
 
-                        ParticleManager:SetParticleControl(particle, 0, radiantBotTowers[i]:GetAbsOrigin())
+                        ParticleManager:SetParticleControl(particle, 0, targetTowerbot:GetAbsOrigin())
                         ParticleManager:SetParticleControl(particle, 1, Vector(200,0,0))
 
 

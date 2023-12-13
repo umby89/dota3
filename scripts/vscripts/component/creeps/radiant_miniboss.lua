@@ -3,6 +3,8 @@ if radiant_miniboss == nil then
 end
 
 function radiant_miniboss:Init()
+    GameRules.DropTable = LoadKeyValues("scripts/kv/item_drops.kv")
+
     if IsInToolsMode() then --debug
         GameRules:GetGameModeEntity():SetThink("SpawnRadiantMiniboss", self, 1)
     else
@@ -12,10 +14,12 @@ function radiant_miniboss:Init()
     ListenToGameEvent('entity_killed', OnMinibossDied, nil)
 end
 
-function radiant_miniboss:SpawnRadiantMiniboss()
+function radiant_miniboss:SpawnRadiantMiniboss()  -- TODO DYNAMIC RETRIVE OF POSITION + NOT SPAWN IF ALREADY EXIST
     local positionToSpawn = Vector(-3822.00, -4939.00, 384)
+    print('SpawnRadiantMiniboss')
+    print(self)
     if self ~= nil then
-        CreateUnitByName("radiant_miniboss", thisEntity:GetAbsOrigin(), true, thisEntity ,thisEntity:GetOwner(), nil) --TODO: FIX THIS 
+        CreateUnitByName("radiant_miniboss", positionToSpawn, true, nil, nil, 4) 
     end    
     --SPAWN AT LOCATION
     --SPAWN WITH LIFETIME?
@@ -23,7 +27,9 @@ function radiant_miniboss:SpawnRadiantMiniboss()
 end
 
 function radiant_miniboss:OnMinibossDied(keys)
+    print(keys)
     local killedUnit = EntIndexToHScript( keys.entindex_killed )
+    print(killedUnit)
     if killedUnit:IsCreature() then
         RollDrops(killedUnit)
     end

@@ -30,7 +30,8 @@ function CAddonTemplateGameMode:InitGameMode()
 	print( "Template addon is loaded." )
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
 
-	GameSetup:init()
+	GameSetup:init()	
+
 	custom_tower_behaviour:Init()
 	radiant_miniboss:Init()
 
