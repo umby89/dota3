@@ -24,12 +24,7 @@ function SetAllTowerAbilityInactive()
                 if hAbility ~= nil then
                                         
                     Say(nil, tostring(hAbility), false) 						
-                    hAbility:SetLevel(0)
-                    -- if hAbility:GetAutoCastState() then
-                    -- 	hAbility:ToggleAutoCast()
-                    -- end
-                    if hAbility:GetToggleState() ~= true then
-                    hAbility:ToggleAbility()						
+                    hAbility:SetLevel(0)						
                     end	
                 end
             end           
@@ -44,12 +39,7 @@ function SetAllTowerAbilityInactive()
                 if hAbility ~= nil then
                                         
                     Say(nil, tostring(hAbility), false) 						
-                    hAbility:SetLevel(0)
-                    -- if hAbility:GetAutoCastState() then
-                    -- 	hAbility:ToggleAutoCast()
-                    -- end
-                    if hAbility:GetToggleState() ~= true then
-                    hAbility:ToggleAbility()						
+                    hAbility:SetLevel(0)						
                     end	
                 end
             end           
@@ -64,9 +54,7 @@ function SetAllTowerAbilityInactive()
                 if hAbility ~= nil then
                                         
                     Say(nil, tostring(hAbility), false) 						
-                    hAbility:SetLevel(0)
-                    if hAbility:GetToggleState() ~= true then
-                    hAbility:ToggleAbility()						
+                    hAbility:SetLevel(0)						
                     end	
                 end
             end           
@@ -76,8 +64,7 @@ end
 
 -- 3 is for radiant? 2 for dire?
 function TowerFollen (eventInfo)
-    print(eventInfo.teamnumber)
-    local heal = 2000
+    print(eventInfo.teamnumber)    
     if eventInfo.teamnumber == 2 then
         Say(nil, "A TAWERKA IS DOWN", false)
 
@@ -99,35 +86,12 @@ function TowerFollen (eventInfo)
         radiantTopTowers = Entities:FindAllByName("npc_dota_custom_tower_top_goodguys")
         if radiantTopTowers ~= nil then
             for i = 1, #radiantTopTowers do      
-                local targetTower = radiantTopTowers[i]
+                local targetTowerTop = radiantTopTowers[i]
 
-                local value = math.min(heal, targetTower:GetHealthDeficit())
-                targetTower:Heal(value, self); 
-                targetTower:EmitSound("Hero_Omniknight.Purification")
-                print(targetTower:GetBaseHealthRegen())
-                targetTower:SetBaseHealthRegen(targetTower:GetBaseHealthRegen() * 2)
-                print(targetTower:GetBaseDamageMax())
-                targetTower:SetBaseDamageMax(targetTower:GetBaseDamageMax() * 2)
-                print(targetTower:GetBaseDamageMin())
-                targetTower:SetBaseDamageMin(targetTower:GetBaseDamageMin() * 2)
-                print(targetTower:GetDeathXP())
-                targetTower:SetDeathXP(targetTower:GetDeathXP() * 2)
-                targetTower:SetMaximumGoldBounty(targetTower:GetMaximumGoldBounty() * 2)
-                targetTower:SetMinimumGoldBounty(targetTower:GetMinimumGoldBounty() * 2)
-                 
-                 -- Particle 
-                local particle = ParticleManager:CreateParticle("particles/generic_hero_status/hero_levelup.vpcf", PATTACH_ABSORIGIN_FOLLOW, targetTower)
-                ParticleManager:ReleaseParticleIndex( particle )
-
-
-                ParticleManager:SetParticleControl(particle, 0, targetTower:GetAbsOrigin())
-                ParticleManager:SetParticleControl(particle, 1, Vector(200,0,0))
-
-
-
+                TowerUpgrade(targetTowerTop)
                 
                 for j = 0, 3 do
-                    local hAbility = targetTower:GetAbilityByIndex(j)
+                    local hAbility = targetTowerTop:GetAbilityByIndex(j)
                     if hAbility ~= nil then                                             
                         Say(nil, tostring(hAbility), false)
                         
@@ -148,21 +112,16 @@ function TowerFollen (eventInfo)
         radiantMidTowers = Entities:FindAllByName("npc_dota_custom_tower_mid_goodguys")
         if radiantMidTowers ~= nil then
             for i = 1, #radiantMidTowers do
+
+                local targetTowermid = radiantMidTowers[i]
+
+                TowerUpgrade(targetTowermid)
+
                 for j = 0, 3 do
                      local hAbility = radiantMidTowers[i]:GetAbilityByIndex(j)
                     if hAbility ~= nil then
                                              
                         Say(nil, tostring(hAbility), false)
-                        local value = math.min(heal, radiantMidTowers[i]:GetHealthDeficit())
-                        radiantMidTowers[i]:Heal(value, self);  
-                        radiantMidTowers[i]:EmitSound("Hero_Omniknight.Purification")
-                        
-                        -- Particle 
-                        local particle = ParticleManager:CreateParticle("particles/generic_hero_status/hero_levelup.vpcf", PATTACH_ABSORIGIN_FOLLOW, radiantMidTowers[i])
-                        ParticleManager:ReleaseParticleIndex( particle )
-
-                        ParticleManager:SetParticleControl(particle, 0, radiantMidTowers[i]:GetAbsOrigin())
-                        ParticleManager:SetParticleControl(particle, 1, Vector(200,0,0))
 
                         hAbility:SetLevel(hAbility:GetLevel()+2)
                         -- if hAbility:GetAutoCastState() then
@@ -180,6 +139,13 @@ function TowerFollen (eventInfo)
          radiantBotTowers = Entities:FindAllByName("npc_dota_custom_tower_bot_goodguys")
         if radiantBotTowers ~= nil then
             for i = 1, #radiantBotTowers do
+
+                local targetTowerbot = radiantBotTowers[i]
+
+                TowerUpgrade(targetTowerbot)
+                
+
+                targetTowermid
                 for j = 0, 3 do
                     local hAbility = radiantBotTowers[i]:GetAbilityByIndex(j)
                     if hAbility ~= nil then
@@ -207,6 +173,31 @@ function TowerFollen (eventInfo)
             end   
         end       
     end
+end
+
+function TowerUpgrade(targetTower)
+
+local heal = 2000
+    local value = math.min(heal, targetTower:GetHealthDeficit())
+    targetTower:Heal(value, self); 
+    targetTower:EmitSound("Hero_Omniknight.Purification")
+    print(targetTower:GetBaseHealthRegen())
+    targetTower:SetBaseHealthRegen(targetTower:GetBaseHealthRegen() * 2)
+    print(targetTower:GetBaseDamageMax())
+    targetTower:SetBaseDamageMax(targetTower:GetBaseDamageMax() * 2)
+    targetTower:SetBaseDamageMin(targetTower:GetBaseDamageMin() * 2)
+    print(targetTower:GetDeathXP())
+    targetTower:SetDeathXP(targetTower:GetDeathXP() * 2)
+    targetTower:SetMaximumGoldBounty(targetTower:GetMaximumGoldBounty() * 2)
+    targetTower:SetMinimumGoldBounty(targetTower:GetMinimumGoldBounty() * 2)
+                 
+     -- Particle 
+    local particle = ParticleManager:CreateParticle("particles/generic_hero_status/hero_levelup.vpcf", PATTACH_ABSORIGIN_FOLLOW, targetTower)
+    ParticleManager:ReleaseParticleIndex( particle )
+
+
+    ParticleManager:SetParticleControl(particle, 0, targetTower:GetAbsOrigin())
+    ParticleManager:SetParticleControl(particle, 1, Vector(200,0,0))
 end
 
 
