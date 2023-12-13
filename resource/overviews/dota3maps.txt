@@ -1,8 +1,8 @@
 dota3maps
 {
 	material materials/overviews/dota3maps.vmat
-	pos_x -4096
-	pos_y 4032
-	scale 8.000
+	pos_x -5888
+	pos_y 5888
+	scale 11.500
 }
 

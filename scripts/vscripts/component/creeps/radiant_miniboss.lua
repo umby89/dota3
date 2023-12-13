@@ -11,7 +11,10 @@ function radiant_miniboss:Init()
         GameRules:GetGameModeEntity():SetThink("SpawnRadiantMiniboss", self, 300)
     end
 
-    ListenToGameEvent('entity_killed', OnMinibossDied, nil)
+
+    if onminibosskill_event == nil then 
+        onminibosskill_event = ListenToGameEvent("entity_killed", OnMinibossDied, nil)  
+    end
 end
 
 function radiant_miniboss:SpawnRadiantMiniboss()  -- TODO DYNAMIC RETRIVE OF POSITION + NOT SPAWN IF ALREADY EXIST
@@ -19,14 +22,19 @@ function radiant_miniboss:SpawnRadiantMiniboss()  -- TODO DYNAMIC RETRIVE OF POS
     print('SpawnRadiantMiniboss')
     print(self)
     if self ~= nil then
-        CreateUnitByName("radiant_miniboss", positionToSpawn, true, nil, nil, 4) 
+        radiantMiniboss = Entities:FindAllByName("radiant_miniboss") --TODO NOT WORKING
+        if #radiantMiniboss <= 0  then
+            print(radiantMiniboss)
+            print(#radiantMiniboss)
+            CreateUnitByName("radiant_miniboss", positionToSpawn, true, nil, nil, 4) 
+        end
     end    
     --SPAWN AT LOCATION
     --SPAWN WITH LIFETIME?
     return 30
 end
 
-function radiant_miniboss:OnMinibossDied(keys)
+function OnMinibossDied(keys)
     print(keys)
     local killedUnit = EntIndexToHScript( keys.entindex_killed )
     print(killedUnit)
@@ -35,7 +43,7 @@ function radiant_miniboss:OnMinibossDied(keys)
     end
 end
 
-function radiant_miniboss:RollDrops(unit)
+function RollDrops(unit)
     local DropInfo = GameRules.DropTable[unit:GetUnitName()]
     if DropInfo then
         for item_name,chance in pairs(DropInfo) do
@@ -45,7 +53,7 @@ function radiant_miniboss:RollDrops(unit)
                 local pos = unit:GetAbsOrigin()
                 local drop = CreateItemOnPositionSync( pos, item )
                 local pos_launch = pos+RandomVector(RandomFloat(150,200))
-                item:LaunchLoot(false, 200, 0.75, pos_launch)
+                item:LaunchLoot(false, 200, 0.75, pos_launch, nil)
             end
         end
     end
