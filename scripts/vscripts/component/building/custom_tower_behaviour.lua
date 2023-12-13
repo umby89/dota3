@@ -2,9 +2,9 @@ if custom_tower_behaviour == nil then
 	custom_tower_behaviour = class({})
 end
 
-function custom_tower_behaviour:init()
+function custom_tower_behaviour:Init()
 
-    print('custom_tower_behaviour:init')
+    print('custom_tower_behaviour:Init')
     SetAllTowerAbilityInactive()
 
     if ontowerkill_event == nil then 
@@ -25,12 +25,10 @@ function SetAllTowerAbilityInactive()
                                         
                     Say(nil, tostring(hAbility), false) 						
                     hAbility:SetLevel(0)						
-                    end	
-                end
-            end           
+                end	
+            end
+        end           
         
-        end
-
         -- MID GOOD GUYS
         radiantMidTowers = Entities:FindAllByName("npc_dota_custom_tower_mid_goodguys")
         for i = 1, #radiantMidTowers do
@@ -40,9 +38,8 @@ function SetAllTowerAbilityInactive()
                                         
                     Say(nil, tostring(hAbility), false) 						
                     hAbility:SetLevel(0)						
-                    end	
-                end
-            end           
+                end	
+            end                     
         
         end
 
@@ -55,11 +52,9 @@ function SetAllTowerAbilityInactive()
                                         
                     Say(nil, tostring(hAbility), false) 						
                     hAbility:SetLevel(0)						
-                    end	
-                end
-            end           
-        
-        end
+                end	
+            end
+        end               
 end
 
 -- 3 is for radiant? 2 for dire?
@@ -142,10 +137,8 @@ function TowerFollen (eventInfo)
 
                 local targetTowerbot = radiantBotTowers[i]
 
-                TowerUpgrade(targetTowerbot)
-                
+                TowerUpgrade(targetTowerbot)                
 
-                targetTowermid
                 for j = 0, 3 do
                     local hAbility = radiantBotTowers[i]:GetAbilityByIndex(j)
                     if hAbility ~= nil then
@@ -177,7 +170,7 @@ end
 
 function TowerUpgrade(targetTower)
 
-local heal = 2000
+    local heal = 2000
     local value = math.min(heal, targetTower:GetHealthDeficit())
     targetTower:Heal(value, self); 
     targetTower:EmitSound("Hero_Omniknight.Purification")

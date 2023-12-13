@@ -16,6 +16,7 @@ end
 
 require("game_setup")
 require("component/building/custom_tower_behaviour")
+require("component/creeps/radiant_miniboss")
 
 
 -- Create the game mode when we activate
@@ -30,7 +31,8 @@ function CAddonTemplateGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
 
 	GameSetup:init()
-	custom_tower_behaviour:init()
+	custom_tower_behaviour:Init()
+	radiant_miniboss:Init()
 
 	GameRules.Generated()
 	
