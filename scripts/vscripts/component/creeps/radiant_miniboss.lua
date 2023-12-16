@@ -20,12 +20,10 @@ end
 function radiant_miniboss:SpawnRadiantMiniboss()  -- TODO DYNAMIC RETRIVE OF POSITION + NOT SPAWN IF ALREADY EXIST
     local positionToSpawn = Vector(-3822.00, -4939.00, 384)
     print('SpawnRadiantMiniboss')
-    print(self)
     if self ~= nil then
-        radiantMiniboss = Entities:FindAllByName("radiant_miniboss") --TODO NOT WORKING
+        local radiantMiniboss = Entities:FindAllByName("radiant_miniboss") --TODO NOT WORKING
         if #radiantMiniboss <= 0  then
-            print(radiantMiniboss)
-            print(#radiantMiniboss)
+            print("SpawnRadiantMiniboss number"..#radiantMiniboss)
             CreateUnitByName("radiant_miniboss", positionToSpawn, true, nil, nil, 4) 
         end
     end    
@@ -35,12 +33,33 @@ function radiant_miniboss:SpawnRadiantMiniboss()  -- TODO DYNAMIC RETRIVE OF POS
 end
 
 function OnMinibossDied(keys)
-    print(keys)
+    print("OnMinibossDied keys:")
     local killedUnit = EntIndexToHScript( keys.entindex_killed )
-    print(killedUnit)
-    if killedUnit:IsCreature() then
-        RollDrops(killedUnit)
+   
+	local hero = EntIndexToHScript( keys.entindex_attacker )
+    local killerTeam = hero:GetTeam()
+    if hero:IsRealHero() then
+        local memberID = hero:GetPlayerID()
+        local name = hero:GetClassname()
+        
+        print("OnMinibossDied killedUnit:"..killedUnit:GetUnitName())
+        print("OnMinibossDied killerTeam:"..killerTeam)
+        print("OnMinibossDied hero:"..hero:GetName())
+        print("OnMinibossDied memberID:"..memberID)
+        print("OnMinibossDied name:"..name)
+        
+        --player:AddNewModifier(nil, nil, 'modifier_satyr_hellcaller_unholy_aura', nil)
+        --hero:AddNewModifier(nil, nil, 'modifier_satyr_hellcaller_unholy_aura_bonus', nil)
+   
+        if killedUnit:IsCreature() then
+            RollDrops(killedUnit)
+        end
     end
+
+    
+
+    
+
 end
 
 function RollDrops(unit)
